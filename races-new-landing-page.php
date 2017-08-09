@@ -31,157 +31,47 @@ get_header(); ?>
         </div>
             
         <div class="row"> 
-           <div class="col-xl-8">
+           <div class="col-xl-12">
               <div class="races">
               
           <?php
           $children = get_children( array( 'post_parent' => get_the_ID(4030) ) );
             if ( $children ) {
-              foreach( $children as $child ) { ?>
-                <div>
-                  <img class="img-fluid" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" />
-                  <a href="<?php echo get_permalink($child->ID); ?>">
-                    <?php echo get_the_title($child->ID); ?>
-                  </a>
-                    <?php the_field('race_date', $child->ID); ?>
-                </div>
-                
-              <?php }
+              ?>
+              <table>
+                  <thead>
+                  <tr>
+                      <th data-field="logo" tabindex="0">Race logo</th>
+                      <th data-field="name" tabindex="1">Race name</th>
+                      <th data-field="country" tabindex="2">Country</th>
+                      <th data-field="date" tabindex="3">Date</th>
+                      <th data-field="distance" tabindex="4">Distance</th>
+                      <th data-field="vertical" tabindex="5">Vertical</th>
+                  </tr>
+                  </thead>
+              <tbody>
+              <?php
+              foreach( $children as $i => $child ) {
+                $country = get_field('race_country', $child->ID); ?>
+                <tr data-index="<?php print $i; ?>">
+                  <td><img class="img-fluid" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" /></td>
+                  <td><a href="<?php echo get_permalink($child->ID); ?>"><?php echo get_the_title($child->ID); ?></a></td>
+                    <td><?php print $country . countryFlag($country) ?></td>
+                  <td>
+                  <?php
+                    $date = DateTime::createFromFormat('Ymd', get_field('race_date', $child->ID));
+                    print $date->format('d/m/Y')
+                  ?></td>
+                  <td><?php the_field('race_distance', $child->ID); ?></td>
+                  <td><?php the_field('race_vertical', $child->ID); ?></td>
+                </tr>
 
-              
+              <?php } ?>
+              </tbody></table>
+            <?php
             }
           ?>
-           
-<!--
-///
-               <?php
-                 $repeater = get_field('race_event');
-                 foreach( $repeater as $key => $row )
-                   { 
-                     $column_id[ $key ] = $row['race_date'];
-                   } 
-                   array_multisort( $column_id, SORT_ASC, $repeater );
-      
-      
-                   $currMonth = "start";
-                   foreach( $repeater as $row ) :
-                   {
-                     $date = DateTime::createFromFormat('Ymd', $row['race_date']);
-                     $race_end_date = DateTime::createFromFormat('Ymd', $row['race_end_date']); 
-                     $website_url = $row['race_website'];
-                     $country = $row['race_country'];
-                    
-                     echo '<div class="row race-month">';
-                     echo '<div class="col-xl-12">';
-                     
-                     if ($currMonth != $date->format('F')) :
-                       
-                       {
-                         echo '<strong class="month-heading" id="month-'. $date->format('m') .'">' . $date->format('F') . '</strong>';
-                         $currMonth = $date->format('F');
-                        }
-                      endif;
-                       
-                        echo '<div class="row race-overview">';
-                          echo '<div class="col-xl-12 race-overview-top-border">';
-                          echo '<div class="row">';
-                          echo '<div class="col-xl-4">';
-                            echo '<a href=' . $website_url . '><img class="img-fluid" src='. $row['race_promo_photo'] .' alt="'. $row['race_name'] .'" /></a>'; 
-                          echo '</div>';
-                          
-                          echo '<div class="col-xl-8">';
-                            echo '<div class="row">';
-                              echo '<div class="col-xl-6">';
-                                echo '<ul class="race-info">';
-	    	                          echo '<li><small class="text-muted">Name / Location</small><h2>' . $row['race_name'] . '</h2></li>';
-	    	                          
-	    	                          if ($race_end_date != "") :
-	    	                          {
-	    	                            echo '<li><small class="text-muted">Date</small> ' . $date->format('F d, Y') . ', &ndash; '. $race_end_date->format('F d, Y') .'</li>';
-	    	                          }
-	    	                          else: {
-	    	                            echo '<li><small class="text-muted">Date</small> ' . $date->format('F d, Y') .'</li>';
-	    	                          }
-	    	                          endif;
-	    	                          
-	    	                        echo '</ul>';
-	    	                      echo '</div>';
-	    	                      
-	    	                      echo '<div class="col-xl-6">';
-	    	                        echo '<ul class="race-info">';
-	    	                          echo '<li><small class="text-muted" >Distance</small> ' . addslashes($row['race_distance']) . '</li>';
-	    	                          echo '<li><small class="text-muted">Vertical</small> ' . addslashes($row['race_vertical']) . '</li>';
-	    	                        echo '</ul>';
-	    	                      echo '</div>';
-	    	                    
-	    	                    echo '</div>';
-	    	                    
-	    	                    echo '<div class="row">';
-	    	                      echo '<div class="col-xl-12">';
-	    	                        echo '<div class="row">';
-                                  echo '<div class="col-xl-6">';
-                                    if ($website_url != "") :
-	    	                              {
-	    	                                echo '<p class="race-info"><small class="text-muted">Race website</small> <a href=' . $website_url . '> ' . $website_url . ' </a></p>';
-	    	                              }
-	    	                            endif;
-	    	                          echo '</div>';
-	    	                          
-	    	                          echo '<div class="col-xl-6">';
-                                    if ($country != "") :
-	    	                              {
-	    	                                echo '<p class="race-info"><small class="text-muted">Country</small> '. $country .' </p>';
-	    	                              }
-	    	                            endif;
-	    	                          echo '</div>';
-	    	                        echo '</div>';
-	    	                      echo '</div>';
-	    	                    echo '</div>';  
-	    	                      
-	    	                    echo '<div class="row">';
-	    	                      echo '<div class="col-xl-12">';
-	    	                        echo $row['race_description'];
-	    	                      echo '</div>';
-	    	                    echo '</div>';
-	    	                      
-	    	                    
-	    	                  echo '</div>';
-	    	                echo '</div>'; #<!-- /end race-overview-top-border	-->
-	    	                echo '</div>'; #<!-- /end race-overview-top-border	-->
-	    	                echo '</div>'; #<!-- /end race-overview	-->
-	    	                  
-	    	                
-	    	                
-	    	                echo '</div>'; #<!-- /end span8	-->
-	    	                echo '</div>'; #<!-- /end race-month	-->
-	    	               }
-                   
-                   endforeach;
-                   ?>
-                       
-                 <!-- /repeater	
-////
--->
               </div><!--races-->  
-           </div>
-           <div class="col-xl-4">
-             <div class="sidebar-nav race-nav">
-               <div class="month-heading">Months</div>
-               <ul class="list-of-links">
-               <li><a href="#month-01">January</a></li>
-               <li><a href="#month-02">February</a></li>
-               <li><a href="#month-03">March</a></li>
-               <li><a href="#month-04">April</a></li>
-               <li><a href="#month-05">May</a></li>
-               <li><a href="#month-06">June</a></li>
-               <li><a href="#month-07">July</a></li>
-               <li><a href="#month-08">August</a></li>
-               <li><a href="#month-09">September</a></li>
-               <li><a href="#month-10">October</a></li>
-               <li><a href="#month-11">November</a></li>
-               <li><a href="#month-12">December</a></li>
-               </ul> 
-             </div>
            </div>
         </div>
           
@@ -191,3 +81,22 @@ get_header(); ?>
     </div><!-- /container -->
   </body>
 </html>
+<?php
+function countryFlag($name) {
+    switch ($name) {
+      case 'Switzerland':
+          return '🇨🇭';
+          break;
+      case 'France':
+          return '🇫🇷';
+          break;
+
+      case 'Italy':
+          return '🇮🇹';
+          break;
+
+      default:
+        return '';
+    }
+}
+?>
