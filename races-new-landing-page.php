@@ -12,16 +12,16 @@
 get_header(); ?>
 <!-- Begin Template Content -->
 <div class="container sbs-content-wrapper">
-  <div class="row"> 
+  <div class="row">
       <div class="col-xl-12">
-      
+
         <div class="row">
           <div class="col-xl-12 blog-post-top-rule">
-           
+
             <header class="page-title overview overview-without-border">
               <h1><?php the_title();?></h1>
             </header>
-            
+
             <div class="row">
               <div class="col-xl-12 intro">
                 <?php the_field('races_intro'); ?>
@@ -29,24 +29,24 @@ get_header(); ?>
             </div>
           </div>
         </div>
-            
-        <div class="row"> 
+
+        <div class="row">
            <div class="col-xl-12">
               <div class="races">
-              
+
           <?php
           $children = get_children( array( 'post_parent' => get_the_ID(4030) ) );
             if ( $children ) {
               ?>
-              <table>
+              <table data-toggle="table">
                   <thead>
                   <tr>
-                      <th data-field="logo" tabindex="0">Race logo</th>
-                      <th data-field="name" tabindex="1">Race name</th>
-                      <th data-field="country" tabindex="2">Country</th>
-                      <th data-field="date" tabindex="3">Date</th>
-                      <th data-field="distance" tabindex="4">Distance</th>
-                      <th data-field="vertical" tabindex="5">Vertical</th>
+                      <th data-field="logo" tabindex="0" data-sortable="false">Race logo</th>
+                      <th data-field="name" tabindex="1" data-sortable="true">Race name</th>
+                      <th data-field="country" tabindex="2" data-sortable="true" data-sort-name="_country_data">Country</th>
+                      <th data-field="date" tabindex="3" data-sortable="true">Date</th>
+                      <th data-field="distance" tabindex="4" data-sortable="true">Distance</th>
+                      <th data-field="vertical" tabindex="5" data-sortable="true">Vertical</th>
                   </tr>
                   </thead>
               <tbody>
@@ -56,7 +56,7 @@ get_header(); ?>
                 <tr data-index="<?php print $i; ?>">
                   <td><img class="img-fluid" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" /></td>
                   <td><a href="<?php echo get_permalink($child->ID); ?>"><?php echo get_the_title($child->ID); ?></a></td>
-                    <td><?php print $country . countryFlag($country) ?></td>
+                  <td data-country="<?php print $country; ?>"><?php print countryFlag($country) . ' ' . $country; ?></td>
                   <td>
                   <?php
                     $date = DateTime::createFromFormat('Ymd', get_field('race_date', $child->ID));
@@ -71,13 +71,13 @@ get_header(); ?>
             <?php
             }
           ?>
-              </div><!--races-->  
+              </div><!--races-->
            </div>
         </div>
-          
+
       </div><!-- /.span12 -->
         <?php get_footer(); ?>
-      </div><!--/row-->  
+      </div><!--/row-->
     </div><!-- /container -->
   </body>
 </html>
