@@ -38,13 +38,13 @@ get_header(); ?>
           $children = get_children( array( 'post_parent' => get_the_ID(4030) ) );
             if ( $children ) {
               ?>
-              <table data-toggle="table" data-sort-name="date" data-sort-order="asc">
+              <table data-toggle="table" data-sort-name="date" data-sort-order="desc">
                   <thead>
                   <tr>
                       <th data-field="logo" tabindex="0" data-sortable="false">Race logo</th>
                       <th data-field="name" tabindex="1" data-sortable="true" data-sorter="alphanum">Race name</th>
                       <th data-field="country" tabindex="2" data-sortable="true" data-sorter="countrySorter">Country</th>
-                      <th data-field="date" tabindex="3" data-sortable="true">Date</th>
+                      <th data-field="date" tabindex="3" data-sortable="true" data-sorter="dateSorter">Date</th>
                       <th data-field="distance" tabindex="4" data-sortable="true" data-sorter="numericonly">Distance</th>
                       <th data-field="vertical" tabindex="5" data-sortable="true" data-sorter="numericonly">Vertical</th>
                   </tr>
@@ -60,7 +60,7 @@ get_header(); ?>
                   <?php
                     $date = DateTime::createFromFormat('Ymd', get_field('race_date', $child->ID));
                   ?>
-                  <td data-date="<?php print $date->format('U'); ?>"><?php print $date->format('d/m/Y'); ?></td>
+                  <td><?php print $date->format('d/m/Y'); ?></td>
                   <td><?php the_field('race_distance', $child->ID); ?></td>
                   <td><?php the_field('race_vertical', $child->ID); ?></td>
                 </tr>
@@ -89,6 +89,20 @@ get_header(); ?>
       }
       // a is after b.
       if (a.localeCompare(b) > 0) {
+        return 1;
+      }
+      return 0;
+    }
+
+    function dateSorter(a, b) {
+      date_a = a.split("/");
+      date_b = b.split("/");
+      a = new Date(date_a[1]+"/"+date_a[0]+"/"+date_a[2]);
+      b = new Date(date_b[1]+"/"+date_b[0]+"/"+date_b[2]);
+      if (a.getTime() > b.getTime()) {
+        return -1;
+      }
+      if (a.getTime() < b.getTime()) {
         return 1;
       }
       return 0;
