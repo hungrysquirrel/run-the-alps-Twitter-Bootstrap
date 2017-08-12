@@ -38,15 +38,15 @@ get_header(); ?>
           $children = get_children( array( 'post_parent' => get_the_ID(4030) ) );
             if ( $children ) {
               ?>
-              <table data-toggle="table">
+              <table data-toggle="table" data-sort-name="date" data-sort-order="asc">
                   <thead>
                   <tr>
                       <th data-field="logo" tabindex="0" data-sortable="false">Race logo</th>
-                      <th data-field="name" tabindex="1" data-sortable="true">Race name</th>
-                      <th data-field="country" tabindex="2" data-sortable="true" data-sort-name="_country_data">Country</th>
+                      <th data-field="name" tabindex="1" data-sortable="true" data-sorter="alphanum">Race name</th>
+                      <th data-field="country" tabindex="2" data-sortable="true" data-sorter="countrySorter">Country</th>
                       <th data-field="date" tabindex="3" data-sortable="true">Date</th>
-                      <th data-field="distance" tabindex="4" data-sortable="true">Distance</th>
-                      <th data-field="vertical" tabindex="5" data-sortable="true">Vertical</th>
+                      <th data-field="distance" tabindex="4" data-sortable="true" data-sorter="numericonly">Distance</th>
+                      <th data-field="vertical" tabindex="5" data-sortable="true" data-sorter="numericonly">Vertical</th>
                   </tr>
                   </thead>
               <tbody>
@@ -56,12 +56,11 @@ get_header(); ?>
                 <tr data-index="<?php print $i; ?>">
                   <td><img class="img-fluid" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" /></td>
                   <td><a href="<?php echo get_permalink($child->ID); ?>"><?php echo get_the_title($child->ID); ?></a></td>
-                  <td data-country="<?php print $country; ?>"><?php print countryFlag($country) . ' ' . $country; ?></td>
-                  <td>
+                  <td><?php print countryFlag($country) . ' ' . $country; ?></td>
                   <?php
                     $date = DateTime::createFromFormat('Ymd', get_field('race_date', $child->ID));
-                    print $date->format('d/m/Y')
-                  ?></td>
+                  ?>
+                  <td data-date="<?php print $date->format('U'); ?>"><?php print $date->format('d/m/Y'); ?></td>
                   <td><?php the_field('race_distance', $child->ID); ?></td>
                   <td><?php the_field('race_vertical', $child->ID); ?></td>
                 </tr>
@@ -79,6 +78,22 @@ get_header(); ?>
         <?php get_footer(); ?>
       </div><!--/row-->
     </div><!-- /container -->
+    <script>
+    function countrySorter(a, b) {
+      var pattern = /<img .*>/g;
+      a = a.replace(pattern, '').trim();
+      b = b.replace(pattern, '').trim();
+      // a is before b.
+      if (a.localeCompare(b) < 0) {
+        return -1;
+      }
+      // a is after b.
+      if (a.localeCompare(b) > 0) {
+        return 1;
+      }
+      return 0;
+    }
+</script>
   </body>
 </html>
 <?php
