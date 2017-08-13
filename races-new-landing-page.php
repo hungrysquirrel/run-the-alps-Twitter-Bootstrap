@@ -45,8 +45,8 @@ get_header(); ?>
                       <th data-field="name" tabindex="1" data-sortable="true" data-sorter="alphanum">Race name</th>
                       <th data-field="country" tabindex="2" data-sortable="true" data-sorter="countrySorter">Country</th>
                       <th data-field="date" tabindex="3" data-sortable="true" data-sorter="dateSorter">Date</th>
-                      <th data-field="distance" tabindex="4" data-sortable="true" data-sorter="numericonly">Distance</th>
-                      <th data-field="vertical" tabindex="5" data-sortable="true" data-sorter="numericonly">Vertical</th>
+                      <th data-field="distance" tabindex="4" data-sortable="true" data-sorter="distanceSorter">Distance</th>
+                      <th data-field="vertical" tabindex="5" data-sortable="true" data-sorter="distanceSorter">Vertical</th>
                   </tr>
                   </thead>
               <tbody>
@@ -103,6 +103,18 @@ get_header(); ?>
         return -1;
       }
       if (a.getTime() < b.getTime()) {
+        return 1;
+      }
+      return 0;
+    }
+    function distanceSorter(a, b) {
+      var pattern = /(k{0,1}m){1}/g;
+      a = a.replace(pattern, '').trim();
+      b = b.replace(pattern, '').trim();
+      if (parseInt(a, 10) > parseInt(b, 10)) {
+        return -1;
+      }
+      if (parseInt(a, 10) < parseInt(b, 10)) {
         return 1;
       }
       return 0;
