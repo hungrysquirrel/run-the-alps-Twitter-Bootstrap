@@ -45,8 +45,8 @@ get_header(); ?>
                             <div class="col-xl-12">
                               <p class="race-info">
                                 <small class="text-muted">Date</small>
-                                  <?php $date = DateTime::createFromFormat('Ymd', get_field('race_date', $child->ID)); print $date->format('m/d/Y')?>
-                                  <?php if(get_field('race_end_date')): ?>&ndash; <?php $date = DateTime::createFromFormat('Ymd', get_field('race_end_date', $child->ID)); print $date->format('m/d/Y')?>
+                                  <?php $date = DateTime::createFromFormat('Ymd', get_field('race_date')); print $date->format('m/d/Y')?>
+                                  <?php if(get_field('race_end_date')): ?>&ndash; <?php $date = DateTime::createFromFormat('Ymd', get_field('race_end_date')); print $date->format('m/d/Y')?>
                                   <?php endif; ?>
                               </p>
                             </div>
@@ -90,10 +90,17 @@ get_header(); ?>
                     </div>
                     
                     <div class="col-xl-12">
+                      <hr />
                       <p class="race-info my-0">
                         <small class="text-muted">Description</small>
                       </p>
                       <?php the_field('race_details'); ?>
+                    </div>
+
+                    <div class="col-xl-12">
+                      <p>
+                        <a href="<?php $parentLink = get_permalink($post->post_parent); echo $parentLink; ?>">View a listing of all races</a>
+                      </p>
                     </div>
                   </div>
                 </div>
