@@ -21,12 +21,15 @@ get_header(); ?>
             <header class="page-title overview overview-without-border">
               <h1><?php the_title();?></h1>
             </header>
-
+            
+            <?php while ( have_posts() ) : the_post(); ?>
             <div class="row">
               <div class="col-xl-12 intro">
-                <?php the_field('races_intro'); ?>
+                <?php the_content();?>
               </div>
             </div>
+            <?php endwhile; // end of the loop. ?>
+
           </div>
         </div>
 
@@ -54,14 +57,14 @@ get_header(); ?>
               foreach( $children as $i => $child ) {
                 $country = get_field('race_country', $child->ID); ?>
                 <tr data-index="<?php print $i; ?>">
-                  <td><img class="img-fluid" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" /></td>
+                  <td class="text-center"><img height="34" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" /></td>
                   <td><a href="<?php echo get_permalink($child->ID); ?>"><?php echo get_the_title($child->ID); ?></a></td>
                   <td><?php print countryFlag($country) . ' ' . $country; ?></td>
                   <?php
                     $date = DateTime::createFromFormat('Ymd', get_field('race_date', $child->ID));
                   ?>
-                  <td><?php print $date->format('d/m/Y'); ?></td>
-                  <td><?php the_field('race_distance', $child->ID); ?></td>
+                  <td><?php print $date->format('m/d/Y'); ?></td>
+                  <td><?php the_field('primary_race_distance', $child->ID); ?></td>
                   <td><?php the_field('race_vertical', $child->ID); ?></td>
                 </tr>
 
@@ -128,12 +131,25 @@ function countryFlag($name) {
       case 'Switzerland':
           return '🇨🇭';
           break;
+
       case 'France':
           return '🇫🇷';
           break;
 
       case 'Italy':
           return '🇮🇹';
+          break;
+
+      case 'Liechtenstein':
+          return '🇱🇮';
+          break;
+
+      case 'Germany':
+          return '🇩🇪';
+          break;
+
+      case 'Austria':
+          return '🇦🇹';
           break;
 
       default:
