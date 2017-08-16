@@ -45,9 +45,27 @@ get_header(); ?>
                             <div class="col-xl-12">
                               <p class="race-info">
                                 <small class="text-muted">Date</small>
-                                  <?php $date = DateTime::createFromFormat('Ymd', get_field('race_date')); print $date->format('m/d/Y')?>
-                                  <?php if(get_field('race_end_date')): ?>&ndash; <?php $date = DateTime::createFromFormat('Ymd', get_field('race_end_date')); print $date->format('m/d/Y')?>
-                                  <?php endif; ?>
+                                <?php 
+                                  // get raw date
+                                  $start_date = get_field('race_begin_date', false, false);
+                                  // make date object
+                                  $start_date = new DateTime($start_date);
+
+                                ?>
+                                <?php echo $start_date->format('m/d/Y'); ?>
+
+                                
+                                <?php if(get_field('race_ending_date')): ?>&ndash; 
+                                  <?php 
+                                    $end_date = get_field('race_ending_date', false, false);
+                                    $end_date = new DateTime($end_date);
+                                  ?>
+                                  <?php echo $end_date->format('m/d/Y'); ?>    
+                                <?php endif; ?>
+                                
+  
+
+                                  
                               </p>
                             </div>
                             <div class="col-xl-12">

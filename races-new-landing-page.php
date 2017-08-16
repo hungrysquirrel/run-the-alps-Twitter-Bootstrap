@@ -60,10 +60,14 @@ get_header(); ?>
                   <td class="text-center"><img height="34" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" /></td>
                   <td><a href="<?php echo get_permalink($child->ID); ?>"><?php echo get_the_title($child->ID); ?></a></td>
                   <td><?php print countryFlag($country) . ' ' . $country; ?></td>
-                  <?php
-                    $date = DateTime::createFromFormat('Ymd', get_field('race_date', $child->ID));
+                  <?php 
+                    // get raw date
+                    $start_date = get_field('race_begin_date', $child->ID, false, false);
+                    // make date object
+                    $start_date = new DateTime($start_date);
                   ?>
-                  <td><?php print $date->format('m/d/Y'); ?></td>
+                  <td><?php echo $start_date->format('m/d/Y'); ?></td>
+                 
                   <td><?php the_field('primary_race_distance', $child->ID); ?></td>
                   <td><?php the_field('race_vertical', $child->ID); ?></td>
                 </tr>
@@ -129,27 +133,27 @@ get_header(); ?>
 function countryFlag($name) {
     switch ($name) {
       case 'Switzerland':
-          return '🇨🇭';
+          return 'ðŸ‡¨ðŸ‡­';
           break;
 
       case 'France':
-          return '🇫🇷';
+          return 'ðŸ‡«ðŸ‡·';
           break;
 
       case 'Italy':
-          return '🇮🇹';
+          return 'ðŸ‡®ðŸ‡¹';
           break;
 
       case 'Liechtenstein':
-          return '🇱🇮';
+          return 'ðŸ‡±ðŸ‡®';
           break;
 
       case 'Germany':
-          return '🇩🇪';
+          return 'ðŸ‡©ðŸ‡ª';
           break;
 
       case 'Austria':
-          return '🇦🇹';
+          return 'ðŸ‡¦ðŸ‡¹';
           break;
 
       default:
