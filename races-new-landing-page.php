@@ -21,7 +21,7 @@ get_header(); ?>
             <header class="page-title overview overview-without-border">
               <h1><?php the_title();?></h1>
             </header>
-            
+
             <?php while ( have_posts() ) : the_post(); ?>
             <div class="row">
               <div class="col-xl-12 intro">
@@ -60,14 +60,14 @@ get_header(); ?>
                   <td class="text-center"><img height="34" src="<?php the_field('race_promo_photo', $child->ID); ?>" alt="<?php echo get_the_title($child->ID); ?>" /></td>
                   <td><a href="<?php echo get_permalink($child->ID); ?>"><?php echo get_the_title($child->ID); ?></a></td>
                   <td><?php print countryFlag($country) . ' ' . $country; ?></td>
-                  <?php 
+                  <?php
                     // get raw date
                     $start_date = get_field('race_begin_date', $child->ID, false, false);
                     // make date object
                     $start_date = new DateTime($start_date);
                   ?>
                   <td><?php echo $start_date->format('m/d/Y'); ?></td>
-                 
+
                   <td><?php the_field('primary_race_distance', $child->ID); ?></td>
                   <td><?php the_field('race_vertical', $child->ID); ?></td>
                 </tr>
@@ -104,8 +104,8 @@ get_header(); ?>
     function dateSorter(a, b) {
       date_a = a.split("/");
       date_b = b.split("/");
-      a = new Date(date_a[1]+"/"+date_a[0]+"/"+date_a[2]);
-      b = new Date(date_b[1]+"/"+date_b[0]+"/"+date_b[2]);
+      a = new Date(date_a[0]+"/"+date_a[1]+"/"+date_a[2]);
+      b = new Date(date_b[0]+"/"+date_b[1]+"/"+date_b[2]);
       if (a.getTime() > b.getTime()) {
         return -1;
       }
