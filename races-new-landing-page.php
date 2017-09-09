@@ -68,7 +68,7 @@ get_header(); ?>
                   ?>
                   <td><?php echo $start_date->format('m/d/Y'); ?></td>
 
-                  <td><?php the_field('primary_race_distance', $child->ID); ?></td>
+                  <td><?php the_field('primary_race_distance', $child->ID); ?><span><?php the_field('secondary_race_distances', $child->ID); ?></span></td>
                   <td><?php the_field('race_vertical', $child->ID); ?></td>
                 </tr>
 
@@ -115,9 +115,12 @@ get_header(); ?>
       return 0;
     }
     function distanceSorter(a, b) {
+      // Split distance on <span> tag.
+      split_a = a.split("<span");
+      split_b = b.split("<span");
       var pattern = /(k{0,1}m){1}/g;
-      a = a.replace(pattern, '').trim();
-      b = b.replace(pattern, '').trim();
+      a = split_a[0].replace(pattern, '').trim();
+      b = split_b[0].replace(pattern, '').trim();
       if (parseInt(a, 10) > parseInt(b, 10)) {
         return -1;
       }
